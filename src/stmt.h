@@ -29,6 +29,8 @@ namespace rl {
 
 class Context;
 
+// DB: description of each stmt meaning and the semantic we assume would be good.
+
 class Stmt : public Node {
     public:
         Stmt (Node::NodeID _id) : Node(_id) {};

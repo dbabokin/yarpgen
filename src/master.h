@@ -27,6 +27,8 @@ limitations under the License.
 
 namespace rl {
 
+// DB: description of the class, how to use it,
+// comments for methods and notes where the real work is done.
 class Master {
     public:
         Master (std::string _out_folder);

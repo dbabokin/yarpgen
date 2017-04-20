@@ -29,6 +29,8 @@ namespace rl {
 class Context;
 class GenPolicy;
 
+// DB: General notes on our approach to generation is needed.
+
 class Expr : public Node {
     public:
         Expr (Node::NodeID _id, std::shared_ptr<Data> _value) : Node(_id), value(_value) {}
@@ -36,6 +38,8 @@ class Expr : public Node {
         std::shared_ptr<Data> get_value ();
 
     protected:
+        // DB: all of these methods/fields need gocumentation, they are far
+        // not obvious!
         virtual bool propagate_type () = 0;
         virtual UB propagate_value () = 0;
         std::shared_ptr<Data> value;

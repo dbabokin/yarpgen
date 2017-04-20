@@ -31,6 +31,9 @@ limitations under the License.
 
 namespace rl {
 
+// DB: We need general write-up about how random value generator is used.
+
+// DB: this definitely need documentation
 template<typename T>
 class Probability {
     public:
@@ -44,6 +47,7 @@ class Probability {
         uint64_t prob;
 };
 
+// DB: this definitely need documentation
 class RandValGen {
     public:
         RandValGen (uint64_t _seed);
@@ -115,6 +119,10 @@ struct ArithSSP : public Pattern {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+// DB: generation policies also need separate description, as it's one of key features.
+
+// DB: the class has aweful interface, the least we can do with it -
+// split in section with description of each of them.
 class GenPolicy {
     public:
         GenPolicy ();
