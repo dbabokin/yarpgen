@@ -29,8 +29,7 @@ namespace rl {
 
 class Context;
 
-// DB: description of each stmt meaning and the semantic we assume would be good.
-
+// Abstract class, serves as predecessor for all statements.
 class Stmt : public Node {
     public:
         Stmt (Node::NodeID _id) : Node(_id) {};
@@ -39,6 +38,10 @@ class Stmt : public Node {
         static int total_stmt_count;
 };
 
+// Declaration statement creates new variable and adds it to symbol table:
+// E.g.: variable_declaration = init_statement;
+// Also it provides extern declaration:
+// E.g.: extern variable_declaration;
 class DeclStmt : public Stmt {
     public:
         DeclStmt (std::shared_ptr<Data> _data, std::shared_ptr<Expr> _init, bool _is_extern = false);
@@ -53,6 +56,7 @@ class DeclStmt : public Stmt {
         bool is_extern;
 };
 
+// Expression statement 'converts' any expression to statement.
 class ExprStmt : public Stmt {
     public:
         ExprStmt (std::shared_ptr<Expr> _expr) : Stmt(Node::NodeID::EXPR), expr(_expr) {}
@@ -63,6 +67,12 @@ class ExprStmt : public Stmt {
         std::shared_ptr<Expr> expr;
 };
 
+// Scope statement represents scope and it's content:
+// E.g.:
+// {
+//     ...
+// }
+//TODO: it also fills global SymTable at startup. Master class should do it.
 class ScopeStmt : public Stmt {
     public:
         ScopeStmt () : Stmt(Node::NodeID::SCOPE) {}
@@ -77,6 +87,14 @@ class ScopeStmt : public Stmt {
         std::vector<std::shared_ptr<Stmt>> scope;
 };
 
+// If statement - represents if...else statement. Else branch is optional.
+// E.g.:
+// if (cond) {
+// ...
+// }
+// <else {
+// ...
+// }>
 class IfStmt : public Stmt {
     public:
         IfStmt (std::shared_ptr<Expr> cond, std::shared_ptr<ScopeStmt> if_branch, std::shared_ptr<ScopeStmt> else_branch);
@@ -85,6 +103,7 @@ class IfStmt : public Stmt {
         static std::shared_ptr<IfStmt> generate (std::shared_ptr<Context> ctx, std::vector<std::shared_ptr<Expr>> inp);
 
     private:
+        //TODO: do we need it?
         bool taken;
         std::shared_ptr<Expr> cond;
         std::shared_ptr<ScopeStmt> if_branch;

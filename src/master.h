@@ -27,12 +27,22 @@ limitations under the License.
 
 namespace rl {
 
-// DB: description of the class, how to use it,
-// comments for methods and notes where the real work is done.
+// This class serves as a proxy to generation process.
+// First of all, you should initialize global variable rand_val_gen with seed (see RandValGen).
+// After that you can call generate method (it will do all the work).
+// To print-out result, just call successively all emit methods.
+//
+// Generation process starts with initialization of global Context and extern SymTable.
+// After it, recursive Scope generation method starts
 class Master {
     public:
         Master (std::string _out_folder);
+
+        // It initializes global Context and launches generation process.
         void generate ();
+
+        // Print-out methods
+        // To get valid test, all of them should be called (the order doesn't matter)
         std::string emit_func ();
         std::string emit_init ();
         std::string emit_decl ();

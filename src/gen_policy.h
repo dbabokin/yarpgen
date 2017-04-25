@@ -53,7 +53,10 @@ class Probability {
 // Moreover, it performs shuffling of initial parameters of default generation policy.
 class RandValGen {
     public:
+        //Specific seed can be passed to constructor to reproduce test.
+        // Zero value is reserved (it notifies RandValGen that it can choose any)
         RandValGen (uint64_t _seed);
+
         template<typename T>
         T get_rand_value (T from, T to) {
             std::uniform_int_distribution<T> dis(from, to);
