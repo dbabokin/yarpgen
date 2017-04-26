@@ -31,9 +31,10 @@ limitations under the License.
 
 namespace rl {
 
-// This class links together id (for example, type of unary operator) and it's probability.
-// Usually it is used in form of std::vector<Probability<id>> and defines all possible variants
-// for random decision (probability itself measured in parts, similary to discrete distribution).
+// This class links together id (for example, type of unary operator) and its probability.
+// Usually it is used in the form of std::vector<Probability<id>> and defines all possible variants
+// for random decision (probability itself measured in parts, similarly to std::discrete_distribution).
+// According to agreement, sum of all probabilities in vector should be 100 (so we can treat 1 part as 1 percent).
 template<typename T>
 class Probability {
     public:
@@ -53,7 +54,7 @@ class Probability {
 // Moreover, it performs shuffling of initial parameters of default generation policy.
 class RandValGen {
     public:
-        //Specific seed can be passed to constructor to reproduce test.
+        // Specific seed can be passed to constructor to reproduce the test.
         // Zero value is reserved (it notifies RandValGen that it can choose any)
         RandValGen (uint64_t _seed);
 
@@ -80,7 +81,7 @@ class RandValGen {
 
         // To improve variety of generated tests, we implement shuffling of
         // input probabilities (they are stored in GenPolicy).
-        //TODO: sometimes this action increases test complexity, and tests becomes non-generatable.
+        // TODO: sometimes this action increases test complexity, and tests becomes non-generatable.
         template <typename T>
         void shuffle_prob(std::vector<Probability<T>> &prob_vec) {
             int total_prob = 0;
@@ -114,6 +115,8 @@ extern std::shared_ptr<RandValGen> rand_val_gen;
 
 ///////////////////////////////////////////////////////////////////////////////
 
+// Nowadays we don't have patterns for anything other than a single statement,
+// but new approach to arrays generation (and other improvements) are going to introduce it.
 struct Pattern {
 
 };
@@ -145,7 +148,8 @@ struct ArithSSP : public Pattern {
 // random decision process (distributions, applied patterns and etc).
 // This parameters are responsible for properties of output test.
 // At start all parameters are loaded from config, then some of them are shuffled.
-// GenPolice could be modified during generation process in order to shape output test and gave it desired properties.
+// GenPolicy could be modified during generation process in order to shape output test and gave it desired properties.
+// Every randomly generated entity requires its Context, and Context contains its unique GenPolicy object.
 class GenPolicy {
     public:
         // Utility enums. They are used as IDs in Probability<ID>
@@ -157,7 +161,7 @@ class GenPolicy {
             Inp, Const, MAX_DATA_ID
         };
 
-        //TODO: this can be replaced with true/false
+        // TODO: this can be replaced with true/false
         enum ArithCSEGenID {
             Add, MAX_CSE_GEN_ID
         };

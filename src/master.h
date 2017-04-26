@@ -27,10 +27,10 @@ limitations under the License.
 
 namespace rl {
 
-// This class serves as a proxy to generation process.
+// This class serves as a driver to generation process.
 // First of all, you should initialize global variable rand_val_gen with seed (see RandValGen).
 // After that you can call generate method (it will do all the work).
-// To print-out result, just call successively all emit methods.
+// To print-out result, just call consecutively all emit methods.
 //
 // Generation process starts with initialization of global Context and extern SymTable.
 // After it, recursive Scope generation method starts
@@ -55,6 +55,13 @@ class Master {
 
         GenPolicy gen_policy;
         std::shared_ptr<ScopeStmt> program;
+        // There are three kind of global variables which exist in test.
+        // All of them are initialized at startup to prevent UB. Main difference between them is in what happens after:
+        // 1) Input variables - they can't change their value (it is necessary for CSE)
+        // 2) Mixed variables - they can change their value multiple times.
+        //    They are used in checksum calculation.
+        // 3) Output variables - they can change their value only once.
+        //    They are also used in checksum calculation.
         std::shared_ptr<SymbolTable> extern_inp_sym_table;
         std::shared_ptr<SymbolTable> extern_mix_sym_table;
         std::shared_ptr<SymbolTable> extern_out_sym_table;
