@@ -62,8 +62,9 @@ class VarUseExpr : public Expr {
         UB propagate_value () { return NoUB; }
 };
 
-// Assignment expression assigns one expression to another.
-// It also converts types (replaces implicit casts with TypeCastExpr node) and updates value.
+// Assignment expression represents assignment of one expression to another.
+// Its constructor replaces implicit cast (cast rhs to the type of lhs) with TypeCastExpr node and
+// updates value of lhs (only if this assignment is evaluated in test).
 // E.g.: lhs_expr = rhs_expr
 class AssignExpr : public Expr {
     public:
@@ -82,7 +83,9 @@ class AssignExpr : public Expr {
         bool taken;
 };
 
-// Type Cast expression represents implicit and explicit type casts
+// Type Cast expression represents implicit and explicit type casts.
+// The creator of TypeCastExpr should make the decision about its kind (implicit or explicit)
+// and pass it to constructor. All of implicit casts should be represented with this class.
 // E.g.: (to_type) expr;
 class TypeCastExpr : public Expr {
     public:
@@ -96,6 +99,8 @@ class TypeCastExpr : public Expr {
 
         std::shared_ptr<Expr> expr;
         std::shared_ptr<Type> to_type;
+        // This flag indicates if this conversion is implicit or not.
+        // I.e. if it's implicit and omitted - the program behavior won't change.
         bool is_implicit;
 };
 

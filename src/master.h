@@ -56,7 +56,10 @@ class Master {
         GenPolicy gen_policy;
         std::shared_ptr<ScopeStmt> program;
         // There are three kind of global variables which exist in test.
-        // All of them are initialized at startup to prevent UB. Main difference between them is in what happens after:
+        // All of them are declared as external variables for core test function
+        // to prevent constant propagation optimization.
+        // Also all they are initialized at startup of the test to prevent UB.
+        // Main difference between them is what happens after:
         // 1) Input variables - they can't change their value (it is necessary for CSE)
         // 2) Mixed variables - they can change their value multiple times.
         //    They are used in checksum calculation.
