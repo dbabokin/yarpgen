@@ -39,6 +39,8 @@ DeclStmt::DeclStmt (std::shared_ptr<Data> _data, std::shared_ptr<Expr> _init, bo
     data_var->set_init_value(std::static_pointer_cast<ScalarVariable>(cast_type->get_value())->get_cur_value());
 }
 
+// DB: generation is the most important magic, all generate() methods should
+// have description of what they are doing.
 std::shared_ptr<DeclStmt> DeclStmt::generate (std::shared_ptr<Context> ctx, std::vector<std::shared_ptr<Expr>> inp) {
     total_stmt_count++;
     GenPolicy::add_to_complexity(Node::NodeID::DECL);
@@ -89,6 +91,8 @@ std::string DeclStmt::emit (std::string offset) {
     return ret;
 }
 
+// DB: especcially big methods need documentation to make it easier to read the
+// code.
 std::shared_ptr<ScopeStmt> ScopeStmt::generate (std::shared_ptr<Context> ctx) {
     GenPolicy::add_to_complexity(Node::NodeID::SCOPE);
 
@@ -160,6 +164,7 @@ std::shared_ptr<ScopeStmt> ScopeStmt::generate (std::shared_ptr<Context> ctx) {
     return ret;
 }
 
+// DB: would word "build" be better than "form"? Same applies to all "form" methods.
 std::vector<std::shared_ptr<Expr>> ScopeStmt::form_const_inp_from_ctx (std::shared_ptr<Context> ctx) {
     std::vector<std::shared_ptr<Expr>> ret;
     for (auto i : ctx->get_extern_inp_sym_table()->get_variables()) {
@@ -189,6 +194,7 @@ std::vector<std::shared_ptr<Expr>> ScopeStmt::form_inp_from_ctx (std::shared_ptr
     return ret;
 }
 
+// DB: also definitely needs documentation.
 void ScopeStmt::form_extern_sym_table(std::shared_ptr<Context> ctx) {
     auto p = ctx->get_gen_policy();
     int inp_var_count = rand_val_gen->get_rand_value<int>(p->get_min_inp_var_count(), p->get_max_inp_var_count());

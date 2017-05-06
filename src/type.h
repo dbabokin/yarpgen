@@ -30,6 +30,10 @@ class Data;
 
 extern bool mode_64bit;
 
+// DB: need general description explaining the what this class does.
+// Are type objects unique, etc?
+// Also methods / group of methods need comments for readability - this applies
+// to this class and all its descendants.
 class Type {
     public:
         enum TypeID {
@@ -38,6 +42,7 @@ class Type {
             MAX_TYPE_ID
         };
 
+        // DB: in C++ it's called CV-qualifiers.
         enum Mod {
             NTHG,
             VOLAT,
@@ -46,12 +51,17 @@ class Type {
             MAX_MOD
         };
 
+        // DB: Why the name is "atomic"? It's a bit confusing.
+        // What about "basic" or "fundamental"?
         enum AtomicTypeID {
             Integer, FP, Max_AtomicTypeID
         };
 
         enum IntegerTypeID {
             BOOL,
+            // Note, char and signed char types are not distinguished,
+            // though they are distinguished in C++ standard and char may
+            // map to unsigned char in some implementaions.
             CHAR,
             UCHAR,
             SHRT,

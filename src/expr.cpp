@@ -225,7 +225,7 @@ std::shared_ptr<Expr> ArithExpr::integral_prom (std::shared_ptr<Expr> arg) {
 
     if (!arg->get_value()->get_type()->get_is_bit_field()) {
         //[conv.prom]
-        if (arg->get_value()->get_type()->get_int_type_id() >= IntegerType::IntegerTypeID::INT) // can't perform integral promotiom
+        if (arg->get_value()->get_type()->get_int_type_id() >= IntegerType::IntegerTypeID::INT) // can't perform integral promotion
             return arg;
         return std::make_shared<TypeCastExpr>(arg, IntegerType::init(Type::IntegerTypeID::INT), true);
     }
@@ -276,6 +276,7 @@ std::shared_ptr<Expr> ArithExpr::generate (std::shared_ptr<Context> ctx, std::ve
     return gen_level(ctx, inp, 0);
 }
 
+// DB: this function is very important, need more comments inside the function
 std::shared_ptr<Expr> ArithExpr::gen_level (std::shared_ptr<Context> ctx, std::vector<std::shared_ptr<Expr>> inp, int par_depth) {
     auto p = ctx->get_gen_policy();
     //TODO: it is a stub for testing. Rewrite it later.
@@ -523,6 +524,7 @@ static uint64_t msb(uint64_t x) {
     return ret;
 }
 
+// DB: rebuild is important trick, need comments.
 void BinaryExpr::rebuild (UB ub) {
     switch (op) {
         case BinaryExpr::Add:

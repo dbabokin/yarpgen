@@ -37,8 +37,8 @@ class Expr : public Node {
         std::shared_ptr<Data> get_value ();
 
     protected:
-        // This function does type conversions required by standard (implicit cast, integral promotion or
-        // usual arithmetic conversions) to existing child nodes.
+        // This function does type conversions required by the language standard (implicit cast,
+        // integral promotion or usual arithmetic conversions) to existing child nodes.
         // As a result, it inserts required TypeCastExpr between existing child nodes and current node.
         virtual bool propagate_type () = 0;
         // This function calculates value of current node, based on its child nodes.
@@ -49,7 +49,7 @@ class Expr : public Node {
 };
 
 // Variable Use expression provides access to variable.
-// Any interaction with a variable (access to its value) in generated test is represented with this class.
+// Any interaction with a variable (access to its value) in generated test is represented by this class.
 // For example, assignment to the variable may use VarUseExpr as lhs.
 class VarUseExpr : public Expr {
     public:
@@ -64,7 +64,7 @@ class VarUseExpr : public Expr {
 
 // Assignment expression represents assignment of one expression to another.
 // Its constructor replaces implicit cast (cast rhs to the type of lhs) with TypeCastExpr node and
-// updates value of lhs (only if this assignment is evaluated in test).
+// updates value of lhs (only if this assignment is evaluated in the test, i.e. "taken" is true).
 // E.g.: lhs_expr = rhs_expr
 class AssignExpr : public Expr {
     public:
@@ -106,6 +106,8 @@ class TypeCastExpr : public Expr {
 
 // Constant expression represents constant values
 // E.g.: 123ULL
+// TODO: should we play around with different representation of constants? I.e. decimal,
+// hex, octal, with and without C++14 style apostrophes, etc.
 class ConstExpr : public Expr {
     public:
         ConstExpr (AtomicType::ScalarTypedVal _val);
@@ -126,6 +128,7 @@ class ArithExpr : public Expr {
         static std::shared_ptr<Expr> generate (std::shared_ptr<Context> ctx, std::vector<std::shared_ptr<Expr>> inp);
 
     protected:
+        // DB: all these need documentation.
         static GenPolicy choose_and_apply_ssp_const_use (GenPolicy old_gen_policy);
         static GenPolicy choose_and_apply_ssp_similar_op (GenPolicy old_gen_policy);
         static GenPolicy choose_and_apply_ssp (GenPolicy old_gen_policy);
