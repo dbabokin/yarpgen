@@ -128,10 +128,13 @@ class ArithExpr : public Expr {
         static std::shared_ptr<Expr> generate (std::shared_ptr<Context> ctx, std::vector<std::shared_ptr<Expr>> inp);
 
     protected:
-        // DB: all these need documentation.
+        // This function chooses one of ArithSSP::ConstUse patterns and combines old_gen_policy with it
         static GenPolicy choose_and_apply_ssp_const_use (GenPolicy old_gen_policy);
+        // This function chooses one of ArithSSP::SimilarOp patterns and combines old_gen_policy with it
         static GenPolicy choose_and_apply_ssp_similar_op (GenPolicy old_gen_policy);
+        // Bridge to choose_and_apply_ssp_const_use and choose_and_apply_ssp_similar_op. This function combines both of them.
         static GenPolicy choose_and_apply_ssp (GenPolicy old_gen_policy);
+        // Top-level recursive function for expression tree generation
         static std::shared_ptr<Expr> gen_level (std::shared_ptr<Context> ctx, std::vector<std::shared_ptr<Expr>> inp, int par_depth);
 
         std::shared_ptr<Expr> integral_prom (std::shared_ptr<Expr> arg);
