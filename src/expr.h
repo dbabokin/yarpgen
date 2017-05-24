@@ -110,7 +110,7 @@ class TypeCastExpr : public Expr {
 // hex, octal, with and without C++14 style apostrophes, etc.
 class ConstExpr : public Expr {
     public:
-        ConstExpr (AtomicType::ScalarTypedVal _val);
+        ConstExpr (FundType::ScalarTypedVal _val);
         std::string emit (std::string offset = "");
         static std::shared_ptr<ConstExpr> generate (std::shared_ptr<Context> ctx);
 
